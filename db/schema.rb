@@ -16,7 +16,10 @@ ActiveRecord::Schema.define(version: 20170208150405) do
   enable_extension "plpgsql"
 
   create_table "users", force: :cascade do |t|
-    t.integer "money", default: 0
+    t.decimal "balance",         default: "0.0"
+    t.string  "password_digest"
+    t.string  "access_token"
+    t.index ["access_token"], name: "index_users_on_access_token", using: :btree
   end
 
 end
