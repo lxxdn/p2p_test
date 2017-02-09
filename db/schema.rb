@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208150405) do
+ActiveRecord::Schema.define(version: 20170209011903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "transactions", force: :cascade do |t|
+    t.string   "type",       null: false
+    t.integer  "amount",     null: false
+    t.integer  "target_id",  null: false
+    t.integer  "source_id",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type"], name: "index_transactions_on_type", using: :btree
+  end
 
   create_table "users", force: :cascade do |t|
     t.decimal "balance",         default: "0.0"

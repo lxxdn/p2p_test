@@ -8,6 +8,10 @@ module API
       api_error(:unprocessable_entity, msg)
     end
 
+    def render_403(msg = 'Please user the correct access token')
+      api_error(:forbidden, msg)
+    end
+
     def format_errors(errors)
       errors.full_messages.join("\n")
     end

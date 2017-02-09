@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   namespace :api do
     resources :users, only: [:create]
     post 'login', to: 'sessions#create'
+    post 'borrow', to: "transactions#create_borrow_transaction"
   end
 end
