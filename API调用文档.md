@@ -8,6 +8,7 @@ Action: POST
 Url: /api/users
 
 Parameters:
+
 1. password
 2. balance (可选，默认值为0)
 
@@ -27,6 +28,7 @@ Action: POST
 Url: /api/login
 
 Parameters:
+
 1. password
 2. balance (可选，默认值为0)
 
@@ -44,10 +46,11 @@ Action: POST
 Url: /api/lend
 
 Parameters
+
 1. source_id 借出钱的用户id
 2. target_id 借入钱的用户id
 
-headers: X-API-Token  借出钱用户的access_token
+Headers: X-API-Token  借出钱用户的access_token
 
 
 Example:
@@ -68,6 +71,7 @@ Action: POST
 Url: /api/payback
 
 Parameters:
+
 1. source_id 还出钱的用户id
 2. target_id 收到钱的用户id
 
@@ -117,8 +121,8 @@ Url: /api/check_between
 
 Parameters:
 
-user_id 主用户，需要提供access_token
-user2_id 比较用户
+1. user_id 主用户，需要提供access_token
+2. user2_id 比较用户
 
 Headers: X-API-Token 用户的access_token
 
