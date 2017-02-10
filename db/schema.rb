@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170209011903) do
+ActiveRecord::Schema.define(version: 20170210003847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assets", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "balance",          default: 0
+    t.integer "amount_of_lend",   default: 0
+    t.integer "amount_of_borrow", default: 0
+    t.index ["user_id"], name: "index_assets_on_user_id", using: :btree
+  end
+
+  create_table "debts", force: :cascade do |t|
+    t.integer "debtee_id"
+    t.integer "debtor_id"
+    t.integer "amount"
+    t.index ["debtee_id", "debtor_id"], name: "index_debts_on_debtee_id_and_debtor_id", using: :btree
+  end
 
   create_table "transactions", force: :cascade do |t|
     t.string   "type",       null: false
@@ -26,9 +41,8 @@ ActiveRecord::Schema.define(version: 20170209011903) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.decimal "balance",         default: "0.0"
-    t.string  "password_digest"
-    t.string  "access_token"
+    t.string "password_digest"
+    t.string "access_token"
     t.index ["access_token"], name: "index_users_on_access_token", using: :btree
   end
 
