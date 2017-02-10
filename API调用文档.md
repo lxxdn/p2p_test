@@ -15,7 +15,7 @@ Parameters:
 Example:
 
 ```sh
-curl -i "http://localhost:3000/api/users" -d "password=1234&balance=100"
+curl -i "https://myp2ptest.herokuapp.com/api/users" -d "password=1234&balance=100"
 ```
 
 返回值:  user_id 和 access_token
@@ -35,7 +35,7 @@ Parameters:
 Example:
 
 ```sh
-curl -i "http://localhost:3000/api/login" -d "id=15&password=1234"
+curl -i "https://myp2ptest.herokuapp.com/api/login" -d "id=15&password=1234"
 ```
 返回值 access_token
 
@@ -58,7 +58,7 @@ Example:
 id为12的用户借给user为13的用户30元钱
 
 ```sh
-curl -i -H 'X-API-Token: j34ck1zql2' "http://localhost:3000/api/lend" -d "source_id=12&target_id=13&amount=30"
+curl -i -H 'X-API-Token: j34ck1zql2' "https://myp2ptest.herokuapp.com/api/lend" -d "source_id=12&target_id=13&amount=30"
 ```
 
 返回值
@@ -82,7 +82,7 @@ Example:
 id为13的用户还给user为12的用户30元钱
 
 ```sh
-curl -i -H 'X-API-Token: fbxplll6sg' "http://localhost:3000/api/payback" -d "source_id=13&target_id=12&amount=30"
+curl -i -H 'X-API-Token: fbxplll6sg' "https://myp2ptest.herokuapp.com/api/payback" -d "source_id=13&target_id=12&amount=30"
 ```
 
 返回值
@@ -105,7 +105,7 @@ Example:
 查询id为12的用户的账户情况
 
 ```sh
-curl -i -H 'X-API-Token: fbxplll6sg' "http://localhost:3000/api/check_for?user_id=12"
+curl -i -H 'X-API-Token: fbxplll6sg' "https://myp2ptest.herokuapp.com/api/check_for?user_id=12"
 ```
 
 返回值
@@ -131,7 +131,7 @@ Example:
 查询id为12的用户和id为13的用户的债务情况
 
 ```sh
-curl -i -H 'X-API-Token: j34ck1zql2' "http://localhost:3000/api/check_between?user_id=12&user2_id=13"
+curl -i -H 'X-API-Token: j34ck1zql2' "https://myp2ptest.herokuapp.com/api/check_between?user_id=12&user2_id=13"
 ```
 
 返回值
