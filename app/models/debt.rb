@@ -30,13 +30,26 @@ class Debt < ActiveRecord::Base
     end
   end
 
+  def debt_between(user1, user2)
+    if debtor == user1 && debtee == user2
+      -1* amount
+    elsif debtor == user2 && debtee == user1
+      amount
+    else
+      0
+    end
+  end
+
   class << self
     # this method check the debt between user1 and user2
+    # return value:
+    # 1. if the return value is positive, user2 owes user1
+    # 2. if the return value is negative, user1 owes user2
     def query(user1, user2)
       return nil if user1.nil? || user2.nil?
       debt = Debt.find_record(user1, user2)
       return 0 unless debt
-      debt.debtor == user1 ? -1*debt.amount : debt.amount
+      debt.debt_between(user1, user2)
     end
 
     def find_or_create_record(user1, user2)

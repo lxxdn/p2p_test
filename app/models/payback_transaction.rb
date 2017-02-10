@@ -1,4 +1,4 @@
-class LendTransaction < Transaction
+class PaybackTransaction < Transaction
 
   with_options presence: true do
     validates :source_id
@@ -17,20 +17,25 @@ class LendTransaction < Transaction
           [source_user, target_user].sort{|u1, u2| u1.asset.id <=> u2.asset.id}.each{|u| u.asset.lock!}
           debt_record = Debt.find_or_create_record(source_user, target_user).lock!
 
+          raise 'Payback failed' if -1*debt_record.debt_between(source_user, target_user) < amount
+
           source_user.asset.balance -= amount
-          source_user.asset.amount_of_lend += amount
+          source_user.asset.amount_of_borrow -= amount
           source_user.asset.save!
           target_user.asset.balance += amount
-          target_user.asset.amount_of_borrow += amount
+          target_user.asset.amount_of_lend -= amount
           target_user.asset.save!
           debt_record.update_record!(source_user, target_user, amount)
 
-          LendTransaction.create!(source_id: source_user.id, target_id: target_user.id, amount: amount)
+          PaybackTransaction.create!(source_id: source_user.id, target_id: target_user.id, amount: amount)
         end
 
-      rescue ActiveRecord::RecordInvalid => exception
-        raise exception
+      rescue ActiveRecord::RecordInvalid => e
+        raise e
+      rescue RuntimeError => e
+        raise e
       end
+
     end
   end
 end

@@ -1,24 +1,29 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+数据库中一共有4张表，
 
-Things you may want to cover:
+* User表 存储用户id，access_token 和 password_digest
+* Asset表 有一个指向用户表的外键，存储的是一个用户当前的余额，借入款总额和借出款总额
+* Debt表 存储的是两个用户之间的负债情况，debtee_id, debtor_id 和 amount 当有一条记录的时候，表示 debtor 欠 debtor 数额为 amount 的钱
+* Transaction表 用单表继承的方式，存储了借出记录(LendTransaction) 和 归还记录 PaybackTransaction 两张子表， 存储了两个用户的交易记录
+其实这张表的内容并不一定需要存储，只是我觉得p2p用户可能会对交易记录感兴趣
 
-* Ruby version
+当发生一个借款交易
 
-* System dependencies
+会触发一个事务：
+  1. 锁定两个用户对应的资产表(Asset表)中的行(锁行)
+  2. 然后找到这两个用户对应的负债表(Debt表)中的行(锁行)
+  3. 然后对两个用户的资产表作操作，修改余额，借入总额和借出总额，保存
+  4. 然后对这两个用户的负债表中的纪录做修改，保存
+  5. 在Transaction中创建一个借出记录
 
-* Configuration
+发生一个还款交易也是类似的流程，只是要保证检查还款总额不能超过总的负债
 
-* Database creation
+之后的两个查询api，不需要加锁，直接去数据库里读出相对应的条目即可。
 
-* Database initialization
+加锁的时候，为了防止死锁的情况发生，统一的顺序： 
+1. 先给asset表中的两行加锁，然后给debt表中的行加锁。
+2. 两条asset记录加锁的顺序是按照id从小到大来加锁的
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
-
-* ...
